@@ -12,5 +12,7 @@ reindeers = sorted(
 )
 
 max_calories = reindeers[0]
-
 top3_calories = sum(reindeers[0:3])
+
+print(f"Solution to part 1: {max_calories}")
+print(f"Solution to part 2: {top3_calories}")
