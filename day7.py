@@ -14,16 +14,15 @@ filesystem = {path.as_posix(): {}}
 i=0
 while i < len(lines):
     command = lines[i]
+    i+=1
     if not command.startswith("$ "):
-        i += 1
+        pass
     else:
         if command.startswith("$ cd "):
             path = path/command[5:].strip(" ")
             if path_str not in filesystem:
                 filesystem[path_str] = {}
-            i += 1
         elif command.startswith("$ ls"):
-            i+=1
             tmp_path = path/command[5:].strip(" ")
             path_str = tmp_path.resolve().as_posix()
             if path_str not in filesystem:
