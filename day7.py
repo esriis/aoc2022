@@ -5,7 +5,6 @@ file_path = "input/day7.txt"
 with open(file_path, mode="r") as f:
     text = f.read()
 
-
 lines = text.strip("\n").split("\n")
 
 path = Path("/")
@@ -15,9 +14,7 @@ i=0
 while i < len(lines):
     command = lines[i]
     i+=1
-    if not command.startswith("$ "):
-        pass
-    else:
+    if command.startswith("$ "):
         if command.startswith("$ cd "):
             path = path/command[5:].strip(" ")
             path_str = path.resolve().as_posix()
@@ -36,9 +33,8 @@ while i < len(lines):
                     filename = filename.strip(" ")
                     filesystem[path_str][filename] = size                   
                 i += 1
-        
-        else:
-            raise Exception("Failed to parse line")
+    else:
+        raise Exception("Failed to parse line")
         
 folder_sizes = {path: 0 for path in filesystem.keys()}
 for path, files in filesystem.items():
@@ -49,7 +45,6 @@ for path, files in filesystem.items():
         folder_sizes[parent_path] += size
 
 max_size = 100_000
-
 solution_part1 = sum([size for size in folder_sizes.values() if size <= max_size])
 
 print(f"Solution to part 1: {solution_part1}")
