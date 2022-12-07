@@ -20,6 +20,7 @@ while i < len(lines):
     else:
         if command.startswith("$ cd "):
             path = path/command[5:].strip(" ")
+            path_str = path.resolve().as_posix()
             if path_str not in filesystem:
                 filesystem[path_str] = {}
         elif command.startswith("$ ls"):
