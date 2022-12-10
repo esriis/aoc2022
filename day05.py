@@ -1,6 +1,6 @@
 import re
 
-file_path = "input/day5.txt"
+file_path = "input/day05.txt"
 
 with open(file_path, mode="r") as f:
     text = f.read()

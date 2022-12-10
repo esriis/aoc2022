@@ -1,4 +1,4 @@
-file_path = "input/day6.txt"
+file_path = "input/day06.txt"
 
 def find_marker(buffer: str, num_distinct_chars: int):
     start = 0

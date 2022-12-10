@@ -1,6 +1,6 @@
 from pathlib import Path
 
-file_path = "input/day7.txt"
+file_path = "input/day07.txt"
 
 with open(file_path, mode="r") as f:
     text = f.read()

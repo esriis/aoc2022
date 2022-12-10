@@ -1,6 +1,6 @@
 import numpy as np
 
-file_path = "input/day8.txt"
+file_path = "input/day08.txt"
 
 with open(file_path, mode="r") as f:
     text = f.read()
