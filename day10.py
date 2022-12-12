@@ -5,8 +5,6 @@ with open(file_path, mode="r") as f:
 
 lines = text.splitlines()
 
-delay = 2
-
 def line_to_dx(line: str):
     dx_str = line[5:]
     return [0, int(dx_str)] if len(dx_str) > 0 else [0]
@@ -26,8 +24,6 @@ print(f"The solution to part 1: {solution_part1}")
 """
 Part 2
 """
-
-sprite_width = 3
 
 CRT_width = 40
 CRT_height = 6
