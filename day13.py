@@ -1,3 +1,6 @@
+import numpy as np
+from functools import cmp_to_key
+
 file_path = "input/day13.txt"
 
 with open(file_path, mode="r") as f:
@@ -68,42 +71,56 @@ def parse_ints(packet_list: list) -> list:
 def parse_packet(packet_str: str):
     return parse_ints(parse_lists([packet_str])[0])
 
-pair_str_list = [line.split("\n") for line in text.strip("\n").split("\n\n")]
-
-in_order = 0
-
-for pair in pair_str_list:
-    for packet_str in pair:
-        result = parse_packet(packet_str)
-        str_final = str(result).replace(" ", "")
-        if str_final != packet_str:
-            raise Exception()
-        else:
-            print("Fine!")
-
-def in_order_inner(left, right):
-    determined = False
-    for left_val, right_val in zip(left, right):
-        if left_val == right_val:
-            pass
-        else:
-            if isinstance(left_val, int) & isinstance(right_val, int):
+def compare(left, right) -> int:
+    """
+    Returns sign(left-right):
+    left > right -> sign = 1
+    left = right -> sign = 0
+    left < right -> sign = -1
+    """
+    if isinstance(left, int) and isinstance(right, int):
+        sign = np.sign(left-right)
+    elif isinstance(left, list) and isinstance(right, list):
+        index = 0
+        determined = False
+        while (not determined) and (index < min(len(left), len(right))):
+            sign = compare(left[index], right[index])
+            if sign != 0:
                 determined = True
-                result = left_val < right_val
-            else:
-                if isinstance(left_val, int) & isinstance(right_val, list):
-                    determined, result = in_order_inner([left_val], right_val)
-                elif isinstance(left_val, list) & isinstance(right_val, int):
-                    determined, result = in_order_inner(left_val, [right_val])
-                else:
-                    raise Exception()
-            if determined:
-                return determined, result
-    return determined, None
-
-def in_order(left, right):
-    determined, result = in_order_inner(left, right)
-    if not determined:
-        return True
+            index += 1
+        if not determined:
+            sign = compare(len(left), len(right))
+    elif isinstance(left, int) and isinstance(right, list):
+        sign = compare([left], right)
+    elif isinstance(left, list) and isinstance(right, int):
+        sign = compare(left, [right])
     else:
-        return result
+        raise Exception()
+    return sign
+
+
+pair_str_list = [line.split("\n") for line in text.strip("\n").split("\n\n")]
+pairs = [tuple(parse_packet(packet_str) for packet_str in line) for line in pair_str_list]
+pair_in_order = [compare(pair[0], pair[1]) <= 0 for pair in pairs]
+
+solution_part1 = sum(i+1 for i, in_order in enumerate(pair_in_order) if in_order)
+
+print(f"Solution to part 1 is {solution_part1}")
+
+"""
+Part 2
+"""
+
+new_packets = [[[2]],[[6]]]
+
+packet_list = new_packets.copy()
+_ = [packet_list.extend(pair) for pair in pairs]
+
+
+sorted_packet_list = sorted(packet_list, key=cmp_to_key(compare), reverse=False)
+
+indices = [i+1 for i, packet in enumerate(sorted_packet_list) if packet in new_packets]
+
+solution_part2 = indices[0]*indices[1]
+
+print(f"Solution to part 2 is {solution_part2}")
